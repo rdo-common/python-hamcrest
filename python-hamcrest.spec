@@ -37,7 +37,6 @@ Requires:       python2-six
 
 Python 2 version.
 
-%if %{with python3}
 %package -n python3-%{modname}
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-%{modname}}
@@ -51,7 +50,6 @@ Requires:       python3-six
 %description -n python3-%{modname} %{_description}
 
 Python 3 version.
-%endif
 
 %prep
 %autosetup -n %{origname}-%{version} -p1
