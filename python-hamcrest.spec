@@ -1,27 +1,17 @@
-%if 0%{?rhel} && 0%{?rhel} <= 7
-%bcond_with python3
-%else
-%bcond_without python3
-%endif
-
 %global modname hamcrest
 %global origname PyHamcrest
 
 Name:           python-%{modname}
-Version:        1.8.5
-Release:        2%{?dist}
+Version:        1.9.0
+Release:        1%{?dist}
 Summary:        Hamcrest matchers for Python
 
 License:        BSD
 URL:            https://github.com/hamcrest/PyHamcrest
 Source0:        %{url}/archive/V%{version}/%{name}-%{version}.tar.gz
 
-# https://github.com/hamcrest/PyHamcrest/commit/4327d0be0ca6adfaec427b96149219a224dc826c
-Patch0001:      0001-correct-calling-API-call-with-args.patch
-# https://github.com/hamcrest/PyHamcrest/commit/27fd600fb24aacef589feddb06ef1725ca30319b
-Patch0002:      0001-Return-result-of-a-deferred-call.patch
 # https://github.com/hamcrest/PyHamcrest/commit/37a4d0dbeb9a92b959edfb9b1aceba4eaacf9f78
-Patch0003:      0001-Add-boolean-matchers.patch
+Patch0001:      0001-Add-boolean-matchers.patch
 
 BuildArch:      noarch
 
@@ -37,18 +27,11 @@ in the area of writing flexible tests that matchers are most commonly used.
 Summary:        %{summary}
 %{?python_provide:%python_provide python2-%{modname}}
 BuildRequires:  python2-devel
-%if 0%{?rhel} && 0%{?rhel} <= 7
-BuildRequires:  python-setuptools
-BuildRequires:  pytest
-BuildRequires:  python-six
-Requires:       python-six
-%else
 BuildRequires:  python2-setuptools
 BuildRequires:  python2-pytest
+BuildRequires:  python2-mock
 BuildRequires:  python2-six
 Requires:       python2-six
-%endif
-BuildRequires:  python2-mock
 
 %description -n python2-%{modname} %{_description}
 
@@ -75,35 +58,30 @@ Python 3 version.
 
 %build
 %py2_build
-%if %{with python3}
 %py3_build
-%endif
 
 %install
 %py2_install
-%if %{with python3}
 %py3_install
-%endif
 
 %check
 # Drop coverage and other presets
 mv pytest.ini pytest.ini~
 PYTHONPATH=%{buildroot}%{python2_sitelib} py.test-%{python2_version} -v
-%if %{with python3}
 PYTHONPATH=%{buildroot}%{python3_sitelib} py.test-%{python3_version} -v
-%endif
 
 %files -n python2-%{modname}
 %{python2_sitelib}/%{origname}-*.egg-info/
 %{python2_sitelib}/%{modname}/
 
-%if %{with python3}
 %files -n python3-%{modname}
 %{python3_sitelib}/%{origname}-*.egg-info/
 %{python3_sitelib}/%{modname}/
-%endif
 
 %changelog
+* Mon Oct 03 2016 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 1.9.0-1
+- Update to 1.9.0
+
 * Sun Aug 21 2016 Igor Gnatenko <ignatenko@redhat.com> - 1.8.5-2
 - Backport couple of upstream patches
 
