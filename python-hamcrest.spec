@@ -3,7 +3,7 @@
 
 Name:           python-%{modname}
 Version:        1.9.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Hamcrest matchers for Python
 
 License:        BSD
@@ -77,6 +77,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} py.test-%{python3_version} -v
 %{python3_sitelib}/%{modname}/
 
 %changelog
+* Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 1.9.0-2
+- Rebuild for Python 3.6
+
 * Mon Oct 03 2016 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 1.9.0-1
 - Update to 1.9.0
 
