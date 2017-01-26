@@ -37,44 +37,23 @@ Requires:       python2-six
 
 Python 2 version.
 
-%package -n python3-%{modname}
-Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{modname}}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-pytest
-BuildRequires:  python3-mock
-BuildRequires:  python3-six
-Requires:       python3-six
-
-%description -n python3-%{modname} %{_description}
-
-Python 3 version.
-
 %prep
 %autosetup -n %{origname}-%{version} -p1
 
 %build
 %py2_build
-%py3_build
 
 %install
 %py2_install
-%py3_install
 
 %check
 # Drop coverage and other presets
 mv pytest.ini pytest.ini~
 PYTHONPATH=%{buildroot}%{python2_sitelib} py.test-%{python2_version} -v
-PYTHONPATH=%{buildroot}%{python3_sitelib} py.test-%{python3_version} -v
 
 %files -n python2-%{modname}
 %{python2_sitelib}/%{origname}-*.egg-info/
 %{python2_sitelib}/%{modname}/
-
-%files -n python3-%{modname}
-%{python3_sitelib}/%{origname}-*.egg-info/
-%{python3_sitelib}/%{modname}/
 
 %changelog
 * Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 1.9.0-2
